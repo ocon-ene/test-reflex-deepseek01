@@ -1,8 +1,9 @@
 import reflex as rx
 from rxconfig import config
-from test_reflex_deepseek01.pages import houses  # Import houses page
+# from test_reflex_deepseek01.pages import houses  # Import houses page
 
 from .ui.base import base_page
+from . import pages, navigation, contact
 
 class State(rx.State):
     label =  "Welcome to Reflex! 2"
@@ -15,33 +16,20 @@ class State(rx.State):
     def handle_title_input_change(self, val):
         self.label = val
 
-    def did_click(self):
-        print(self.label)
+    # def did_click(self):
+    #     print(self.label)
 
 
 
 
 def index() -> rx.Component:
-    return base_page(
-        rx.vstack(
+    my_child = rx.vstack(
             rx.heading(State.label, size="9", margin_bottom="1rem"),
-
-            rx.input(
-                default_value=State.label,
-                on_click=State.did_click,
-                on_change = State.handle_title_input_change
+            rx.link(
+                rx.button("Go to About"),
+                href="/about",  # Link to about page
             ),
-            rx.button(
-                "Write a message when clicked",
-                on_click=State.toggle_click,
-                size="4",
-                margin_top="5rem"
-            ),
-            rx.cond(
-                State.clicked,
-                rx.text("Hello Reflex!", color="green"),
-            ),
-
+            rx.link(), #always do instead of button
             rx.link(
                 rx.button("Go to Houses"),
                 href="/houses",  # Link to houses page
@@ -51,10 +39,28 @@ def index() -> rx.Component:
             spacing="5",
             justify="center",
             align="center",
+            # text_align="center",
             # min_height="100vh",
         )
-    )
+    return base_page(my_child)
+
+
 
 app = rx.App()
 app.add_page(index, route="/")
-app.add_page(houses.houses_page, route="/houses")  # Add houses page
+app.add_page(pages.houses_page, 
+             route=navigation.routes.HOUSES_ROUTE)
+app.add_page(pages.about_page, 
+             route=navigation.routes.ABOUT_US_ROUTE)
+app.add_page(pages.pricing_page, 
+             route=navigation.routes.PRICING_ROUTE)
+app.add_page(contact.contact_page, 
+             route=navigation.routes.CONTACT_US_ROUTE)
+print("HERE")
+app.add_page(contact.contact_entries_list_page, 
+             route=navigation.routes.CONTACT_ENTRIES_ROUTE,
+             on_load=contact.ContactState.list_entries
+             
+)
+
+  # Add houses page
