@@ -3,7 +3,7 @@ from rxconfig import config
 # from test_reflex_deepseek01.pages import houses  # Import houses page
 
 from .ui.base import base_page
-from . import pages, navigation, contact
+from . import blog, contact, pages, navigation
 
 class State(rx.State):
     label =  "Welcome to Reflex! 2"
@@ -56,7 +56,6 @@ app.add_page(pages.pricing_page,
              route=navigation.routes.PRICING_ROUTE)
 app.add_page(contact.contact_page, 
              route=navigation.routes.CONTACT_US_ROUTE)
-print("HERE")
 app.add_page(contact.contact_entries_list_page, 
              route=navigation.routes.CONTACT_ENTRIES_ROUTE,
              on_load=contact.ContactState.list_entries
